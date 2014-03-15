@@ -91,9 +91,11 @@ function addListeners() {
       return;
     }
     
-    if(text.indexOf("!magic8ball") === 0)
+    if(text.indexOf("!magic8ball") === 0 || text.indexOf("!8ball") === 0)
     {
-      if(text.trim().length === "!magic8ball".length)
+      var lazy = text.indexOf("!8ball") === 0;
+
+      if((!lazy && text.trim().length === "!magic8ball".length) || (lazy && text.trim().length === "!8ball".length))
       {
         if(isAssface(nick))
         {
@@ -105,14 +107,17 @@ function addListeners() {
         }
         return;
       }
-
+      
+      var botString = getRandom8ballResult();
       if(isAssface(nick))
       {
-        bot.say(ps1Channel, getRandom8ballResult() + ", assface.");
+        botString = botString + ", assface.";
       }
-      else
+      
+      bot.say(ps1Channel, botString);
+      if(lazy)
       {
-        bot.say(ps1Channel, getRandom8ballResult());
+        bot.say(ps1Channel, "Y'all are lazy.");
       }
       return;
     }
@@ -145,7 +150,7 @@ function doIgnore(nick)
 
 function isAssface(nick)
 {
-  return nick.indexOf("NegativeK") > -1;
+  return nick.indexOf("NegativeK") > -1 || nick.indexOf("loans") > -1;
 }
 
 function isAdmin(nick)
