@@ -19,6 +19,29 @@ var bot = new irc.Client(config.server, config.botName, {
   floodProtection: true
 });
 
+var magic8ballAnswers = [
+"It is certain",
+"It is decidedly so",
+"Without a doubt",
+"Yes definitely",
+"You may rely on it",
+"As I see it, yes",
+"Most likely",
+"Outlook good",
+"Yes",
+"Signs point to yes",
+"Reply hazy try again",
+"Ask again later",
+"Better not tell you now",
+"Cannot predict now",
+"Concentrate and ask again",
+"Don't count on it",
+"My reply is no",
+"My sources say no",
+"Outlook not so good",
+"Very doubtful"
+];
+
 //main
 addListeners();
 connect();
@@ -65,6 +88,33 @@ function addListeners() {
       {
         bot.say(ps1Channel, "ROGER!");
       }
+      return;
+    }
+    
+    if(text.indexOf("!magic8ball") === 0)
+    {
+      if(text.trim().length === "!magic8ball".length)
+      {
+        if(isAssface(nick))
+        {
+          bot.say(ps1Channel, "You didn't ask a god damn question, assface.");
+        }
+        else
+        {
+          bot.say(ps1Channel, "You didn't ask a god damn question.");
+        }
+        return;
+      }
+
+      if(isAssface(nick))
+      {
+        bot.say(ps1Channel, getRandom8ballResult() + ", assface.");
+      }
+      else
+      {
+        bot.say(ps1Channel, getRandom8ballResult());
+      }
+      return;
     }
 
   });
@@ -103,6 +153,11 @@ function isAdmin(nick)
   return nick === "bry";
 }
 
+function getRandom8ballResult()
+{
+  return magic8ballAnswers[getRandomArbitrary(0,19)];
+}
 
-
-
+function getRandomArbitrary(min, max) {
+  return Math.floor(Math.random() * (max - min) + min);
+}
