@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 //config
-var ps1Channel = "#pumpingstationone.org";
+var ps1Channel = "#pumpingstationone";
 var config = {
   channels: [ps1Channel],
   server: "chat.freenode.net",
