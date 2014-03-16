@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 //config
-var ps1Channel = "#pumpingstationone";
+var ps1Channel = "#botwar";
 var config = {
   channels: [ps1Channel],
   server: "chat.freenode.net",
@@ -118,12 +118,29 @@ function addListeners() {
         botString = botString + ".";
       }
       
-      if(lazy)
+      bot.say(ps1Channel, botString);
+      return;
+    }
+
+    if(text.indexOf("!d20") === 0)
+    {
+      var randomNumber = getRandomArbitrary(1,20);
+      var numberString;
+
+      if(randomNumber === 1)
       {
-        botString = botString + " (you must have saved so much time not typing 5 characters)";
+        numberString = "CRITICAL MISS";
+      }
+      else if(randomNumber === 20)
+      {
+        numberString = "CRITICAL HIT";
+      }
+      else 
+      {
+        numberString = randomNumber.toString(); 
       }
 
-      bot.say(ps1Channel, botString);
+      bot.say(ps1Channel, numberString);
       return;
     }
 
@@ -169,5 +186,5 @@ function getRandom8ballResult()
 }
 
 function getRandomArbitrary(min, max) {
-  return Math.floor(Math.random() * (max - min) + min);
+  return Math.floor(Math.random() * (max - min + 1)) + min;
 }
