@@ -7,3 +7,4 @@ Commands:
 
 * !magic8ball / !8ball
 * !brybot
+* !d20
