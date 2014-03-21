@@ -172,7 +172,7 @@ function doIgnore(nick)
 
 function isAssface(nick)
 {
-  return nick.indexOf("NegativeK") > -1 || nick.indexOf("loans") > -1;
+  return nick.indexOf("NegativeK") > -1 || nick.indexOf("loans") > -1 || nick.indexOf("Bioguy") > -1;
 }
 
 function isAdmin(nick)
