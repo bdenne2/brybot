@@ -1,0 +1,34 @@
+{
+  "name": "brybot",
+  "version": "0.1.0",
+  "author": "Bry <bryanna.denney@gmail.com>",
+  "description": "an irc bot that typically just bugs #pumpingstationone",
+  "contributors": [ 
+    {
+      "name": "Bry",
+      "email": "bryanna.denney@gmail.com"
+    } 
+  ],
+  "scripts": {
+    "start": "node main.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bdenne2/brybot.git"
+  },
+  "keywords": [
+    "nodejs",
+    "irc",
+    "bot"
+  ],
+  "dependencies" : {
+    "irc"   :  "0.3.6"
+  },
+  "bundledDependencies": [
+    "union",
+    "ecstatic"
+  ],  
+  "engines": {
+    "node": ">=0.6"
+  }
+}
