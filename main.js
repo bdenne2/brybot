@@ -89,45 +89,21 @@ function addListeners() {
 
     if(text.indexOf("!brybot") === 0)
     {
-      if(isAssface(nick))
-      {
-        bot.say(ps1Channel, "ROGER, ASSFACE!");
-      }
-      else
-      {
-        bot.say(ps1Channel, "ROGER!");
-      }
+      bot.say(ps1Channel, addAssfaceModifier("ROGER", nick, ", ASSFACE!", "!"));
       return;
     }
-    
+
     if(text.indexOf("!magic8ball") === 0 || text.indexOf("!8ball") === 0)
     {
       var lazy = text.indexOf("!8ball") === 0;
 
       if((!lazy && text.trim().length === "!magic8ball".length) || (lazy && text.trim().length === "!8ball".length))
       {
-        if(isAssface(nick))
-        {
-          bot.say(ps1Channel, "You didn't ask a god damn question, assface.");
-        }
-        else
-        {
-          bot.say(ps1Channel, "You didn't ask a god damn question.");
-        }
+        bot.say(ps1Channel, addAssfaceModifier("You didn't ask a god damn question", nick, null, "."));
         return;
       }
       
-      var botString = getRandom8ballResult();
-      if(isAssface(nick))
-      {
-        botString = botString + ", assface.";
-      }
-      else
-      {
-        botString = botString + ".";
-      }
-      
-      bot.say(ps1Channel, botString);
+      bot.say(ps1Channel, addAssfaceModifier(getRandom8ballResult(), nick, null, "."));
       return;
     }
 
@@ -182,6 +158,21 @@ function doIgnore(nick)
 function isAssface(nick)
 {
   return nick.indexOf("NegativeK") > -1 || nick.indexOf("loans") > -1 || nick.indexOf("Bioguy") > -1;
+}
+
+function addAssfaceModifier(innocentMessage, nick, assModifier, normalModifier)
+{
+  if(assModifier == null)
+  {
+    assModifier = ", assface.";
+  }
+
+  if(isAssface(nick))
+  {
+    return innocentMessage = innocentMessage + assModifier;
+  }
+  
+  return innocentMessage + normalModifier;
 }
 
 function isAdmin(nick)
