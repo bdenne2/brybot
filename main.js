@@ -166,16 +166,15 @@ function connect() {
 
 function doIgnore(nick)
 {
-  return (nick.indexOf(config.botName) > -1 ||
-      nick.indexOf("sudlowbot") > -1 ||
-      nick.indexOf("peoplemon") > -1
-      
-      );
+  return (nick === config.botName) ||
+      (nick === "sudlowbot") ||
+      (nick === "peoplemon")
+      ;
 }
 
 function isAssface(nick)
 {
-  return nick.indexOf("NegativeK") > -1 || nick.indexOf("loans") > -1 || nick.indexOf("Bioguy") > -1;
+  return (nick === "NegativeK") || (nick === "loans") || (nick === "Bioguy") || (nick === "Nackle");
 }
 
 function isAdmin(nick)
