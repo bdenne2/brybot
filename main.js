@@ -122,25 +122,28 @@ function addListeners() {
       return;
     }
 
-    if(text.indexOf("!d20") === 0)
-    {
-      var randomNumber = getRandomArbitrary(1,20);
-      var numberString;
+    var diceCommandRe = /!(\d*)d(\d+)/;
+    var result = text.match(diceCommandRe);
+    if (result !== null) {  
+        var howManyDice = parseInt(result[1] === "" ? "1" : result[1], 10);
+        var howManySides = parseInt(result[2], 10);
+       
+        if(howManyDice > 10 || howManySides > 9e+254) //haha
+        {
+          bot.say(ps1Channel, "ಠ_ಠ");
+          return;
+        }
 
-      if(randomNumber === 1)
-      {
-        numberString = "CRITICAL MISS";
-      }
-      else if(randomNumber === 20)
-      {
-        numberString = "CRITICAL HIT";
-      }
-      else 
-      {
-        numberString = randomNumber.toString(); 
-      }
-
-      bot.say(ps1Channel, numberString);
+        var i, numberString = '';
+        for(i=0; i<howManyDice; i++)
+        {
+            var randomNumber = getRandomArbitrary(1, howManySides);
+            if(randomNumber === 1) { randomNumber = "CRITICAL MISS"; }
+            else if( randomNumber === howManySides) { randomNumber = "CRITICAL HIT"; }
+            numberString += randomNumber + ", ";
+        }
+        numberString = numberString.substring(0, numberString.length - 2);
+        bot.say(ps1Channel, numberString);
       return;
     }
 
