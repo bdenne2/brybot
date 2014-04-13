@@ -1,19 +1,28 @@
 #!/usr/bin/env node
 
 //config
+var productionEnvironment = false;
 var ps1Channel = "#pumpingstationone";
 var config = {
   channels: [ps1Channel],
   server: "chat.freenode.net",
   botName: "brybot",
+  configFileName: "/home/bry/brybot/config",
+  haveIrcConsoleLog: false,
 };
+
+if(!productionEnvironment)
+{
+  config.configFileName = "config";
+  config.haveIrcConsoleLog = true;
+}
 
 //setup
 var irc = require("irc");
 var fs = require("fs");
 
 var bot = new irc.Client(config.server, config.botName, {
-  debug: true,
+  debug: config.haveIrcConsoleLog,
   autoConnect: false,
   port: 8001,
   floodProtection: true
@@ -50,7 +59,7 @@ connect();
 function addListeners() {
 
   bot.addListener('error', function(message) {
-        console.log('error: ', message);
+//        console.log('error: ', message);
   });
 
   bot.addListener("notice", function(from, to, text, message) {
@@ -67,7 +76,7 @@ function addListeners() {
   {
     if(doIgnore(nick))
     {
-      console.log("LOG: sender currently being ignored");
+//      console.log("LOG: sender currently being ignored");
       return;
     }
     var text = message.args[1];
@@ -80,45 +89,21 @@ function addListeners() {
 
     if(text.indexOf("!brybot") === 0)
     {
-      if(isAssface(nick))
-      {
-        bot.say(ps1Channel, "ROGER, ASSFACE!");
-      }
-      else
-      {
-        bot.say(ps1Channel, "ROGER!");
-      }
+      bot.say(ps1Channel, addAssfaceModifier("ROGER", nick, ", ASSFACE!", "!"));
       return;
     }
-    
+
     if(text.indexOf("!magic8ball") === 0 || text.indexOf("!8ball") === 0)
     {
       var lazy = text.indexOf("!8ball") === 0;
 
       if((!lazy && text.trim().length === "!magic8ball".length) || (lazy && text.trim().length === "!8ball".length))
       {
-        if(isAssface(nick))
-        {
-          bot.say(ps1Channel, "You didn't ask a god damn question, assface.");
-        }
-        else
-        {
-          bot.say(ps1Channel, "You didn't ask a god damn question.");
-        }
+        bot.say(ps1Channel, addAssfaceModifier("You didn't ask a god damn question", nick, null, "."));
         return;
       }
       
-      var botString = getRandom8ballResult();
-      if(isAssface(nick))
-      {
-        botString = botString + ", assface.";
-      }
-      else
-      {
-        botString = botString + ".";
-      }
-      
-      bot.say(ps1Channel, botString);
+      bot.say(ps1Channel, addAssfaceModifier(getRandom8ballResult(), nick, null, "."));
       return;
     }
 
@@ -151,7 +136,7 @@ function addListeners() {
 }
 
 function connect() {
-  fs.readFile('config', 'utf8', function(err, data) {
+  fs.readFile(config.configFileName, 'utf8', function(err, data) {
     if(err) {
       return console.log(err);
     }
@@ -175,6 +160,21 @@ function doIgnore(nick)
 function isAssface(nick)
 {
   return (nick === "NegativeK") || (nick === "loans") || (nick === "Bioguy") || (nick === "Nackle");
+}
+
+function addAssfaceModifier(innocentMessage, nick, assModifier, normalModifier)
+{
+  if(assModifier == null)
+  {
+    assModifier = ", assface.";
+  }
+
+  if(isAssface(nick))
+  {
+    return innocentMessage = innocentMessage + assModifier;
+  }
+  
+  return innocentMessage + normalModifier;
 }
 
 function isAdmin(nick)
