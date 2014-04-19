@@ -81,55 +81,60 @@ function addListeners() {
     }
     var text = message.args[1];
 
-    if(isAdmin(nick) && to === config.botName) //I'm sending directly to bot.
-    {
-      bot.say(ps1Channel, text);
-      return;
-    }
-
-    if(text.indexOf("!brybot") === 0)
-    {
-      bot.say(ps1Channel, addAssfaceModifier("ROGER", nick, ", ASSFACE!", "!"));
-      return;
-    }
-
-    if(text.indexOf("!magic8ball") === 0 || text.indexOf("!8ball") === 0)
-    {
-      var lazy = text.indexOf("!8ball") === 0;
-
-      if((!lazy && text.trim().length === "!magic8ball".length) || (lazy && text.trim().length === "!8ball".length))
+    // Prevent people from messaging the bot with commands that output to the
+    // channel.
+    if(to === config.botName) {
+      if(isAdmin(nick)) //I'm sending directly to bot.
       {
-        bot.say(ps1Channel, addAssfaceModifier("You didn't ask a god damn question", nick, null, "."));
+        bot.say(ps1Channel, text);
         return;
       }
-      
-      bot.say(ps1Channel, addAssfaceModifier(getRandom8ballResult(), nick, null, "."));
-      return;
     }
+    else {
+      if(text.indexOf("!brybot") === 0)
+      {
+        bot.say(ps1Channel, addAssfaceModifier("ROGER", nick, ", ASSFACE!", "!"));
+        return;
+      }
 
-    var diceCommandRe = /!(\d*)d(\d+)/;
-    var result = text.match(diceCommandRe);
-    if (result !== null) {  
-        var howManyDice = parseInt(result[1] === "" ? "1" : result[1], 10);
-        var howManySides = parseInt(result[2], 10);
-       
-        if(howManyDice > 10 || howManySides > 9e+254) //haha
+      if(text.indexOf("!magic8ball") === 0 || text.indexOf("!8ball") === 0)
+      {
+        var lazy = text.indexOf("!8ball") === 0;
+
+        if((!lazy && text.trim().length === "!magic8ball".length) || (lazy && text.trim().length === "!8ball".length))
         {
-          bot.say(ps1Channel, "ಠ_ಠ");
+          bot.say(ps1Channel, addAssfaceModifier("You didn't ask a god damn question", nick, null, "."));
           return;
         }
 
-        var i, numberString = '';
-        for(i=0; i<howManyDice; i++)
-        {
-            var randomNumber = getRandomArbitrary(1, howManySides);
-            if(randomNumber === 1) { randomNumber = "CRITICAL MISS"; }
-            else if( randomNumber === howManySides) { randomNumber = "CRITICAL HIT"; }
-            numberString += randomNumber + ", ";
-        }
-        numberString = numberString.substring(0, numberString.length - 2);
-        bot.say(ps1Channel, numberString);
-      return;
+        bot.say(ps1Channel, addAssfaceModifier(getRandom8ballResult(), nick, null, "."));
+        return;
+      }
+
+      var diceCommandRe = /!(\d*)d(\d+)/;
+      var result = text.match(diceCommandRe);
+      if (result !== null) {
+          var howManyDice = parseInt(result[1] === "" ? "1" : result[1], 10);
+          var howManySides = parseInt(result[2], 10);
+
+          if(howManyDice > 10 || howManySides > 9e+254) //haha
+          {
+            bot.say(ps1Channel, "ಠ_ಠ");
+            return;
+          }
+
+          var i, numberString = '';
+          for(i=0; i<howManyDice; i++)
+          {
+              var randomNumber = getRandomArbitrary(1, howManySides);
+              if(randomNumber === 1) { randomNumber = "CRITICAL MISS"; }
+              else if( randomNumber === howManySides) { randomNumber = "CRITICAL HIT"; }
+              numberString += randomNumber + ", ";
+          }
+          numberString = numberString.substring(0, numberString.length - 2);
+          bot.say(ps1Channel, numberString);
+        return;
+      }
     }
 
   });
@@ -142,7 +147,7 @@ function connect() {
     }
 
     bot.connect(function() {
-      console.log("bot connected?"); 
+      console.log("bot connected?");
       bot.say("nickServ", "identify " + data);
     });
 
@@ -173,7 +178,7 @@ function addAssfaceModifier(innocentMessage, nick, assModifier, normalModifier)
   {
     return innocentMessage = innocentMessage + assModifier;
   }
-  
+
   return innocentMessage + normalModifier;
 }
 
