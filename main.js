@@ -146,10 +146,12 @@ function connect() {
     if(err) {
       return console.log(err);
     }
+    
+    config.configFile = JSON.parse(data);
 
     bot.connect(function() {
       console.log("bot connected?");
-      bot.say("nickServ", "identify " + data);
+      bot.say("nickServ", "identify " + config.configFile.ircPassword);
     });
 
   });
