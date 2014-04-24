@@ -190,7 +190,7 @@ function isAdmin(nick)
 
 function getRandom8ballResult()
 {
-  return magic8ballAnswers[getRandomArbitrary(0,19)];
+  return magic8ballAnswers[getRandomArbitrary(0,magic8ballAnswers.length - 1)];
 }
 
 function getRandomArbitrary(min, max) {
