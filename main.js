@@ -89,52 +89,52 @@ function addListeners() {
         bot.say(ps1Channel, text);
         return;
       }
+      return; //don't accept pms
     }
-    else {
-      if(text.indexOf("!brybot") === 0)
+
+    if(text.indexOf("!brybot") === 0)
+    {
+      bot.say(ps1Channel, addAssfaceModifier("ROGER", nick, ", ASSFACE!", "!"));
+      return;
+    }
+
+    if(text.indexOf("!magic8ball") === 0 || text.indexOf("!8ball") === 0)
+    {
+      var lazy = text.indexOf("!8ball") === 0;
+
+      if((!lazy && text.trim().length === "!magic8ball".length) || (lazy && text.trim().length === "!8ball".length))
       {
-        bot.say(ps1Channel, addAssfaceModifier("ROGER", nick, ", ASSFACE!", "!"));
+        bot.say(ps1Channel, addAssfaceModifier("You didn't ask a god damn question", nick, null, "."));
         return;
       }
 
-      if(text.indexOf("!magic8ball") === 0 || text.indexOf("!8ball") === 0)
-      {
-        var lazy = text.indexOf("!8ball") === 0;
+      bot.say(ps1Channel, addAssfaceModifier(getRandom8ballResult(), nick, null, "."));
+      return;
+    }
 
-        if((!lazy && text.trim().length === "!magic8ball".length) || (lazy && text.trim().length === "!8ball".length))
+    var diceCommandRe = /!(\d*)d(\d+)/;
+    var result = text.match(diceCommandRe);
+    if (result !== null) {
+        var howManyDice = parseInt(result[1] === "" ? "1" : result[1], 10);
+        var howManySides = parseInt(result[2], 10);
+
+        if(howManyDice > 10 || howManySides > 9e+254) //haha
         {
-          bot.say(ps1Channel, addAssfaceModifier("You didn't ask a god damn question", nick, null, "."));
+          bot.say(ps1Channel, "ಠ_ಠ");
           return;
         }
 
-        bot.say(ps1Channel, addAssfaceModifier(getRandom8ballResult(), nick, null, "."));
-        return;
-      }
-
-      var diceCommandRe = /!(\d*)d(\d+)/;
-      var result = text.match(diceCommandRe);
-      if (result !== null) {
-          var howManyDice = parseInt(result[1] === "" ? "1" : result[1], 10);
-          var howManySides = parseInt(result[2], 10);
-
-          if(howManyDice > 10 || howManySides > 9e+254) //haha
-          {
-            bot.say(ps1Channel, "ಠ_ಠ");
-            return;
-          }
-
-          var i, numberString = '';
-          for(i=0; i<howManyDice; i++)
-          {
-              var randomNumber = getRandomArbitrary(1, howManySides);
-              if(randomNumber === 1) { randomNumber = "CRITICAL MISS"; }
-              else if( randomNumber === howManySides) { randomNumber = "CRITICAL HIT"; }
-              numberString += randomNumber + ", ";
-          }
-          numberString = numberString.substring(0, numberString.length - 2);
-          bot.say(ps1Channel, numberString);
-        return;
-      }
+        var i, numberString = '';
+        for(i=0; i<howManyDice; i++)
+        {
+            var randomNumber = getRandomArbitrary(1, howManySides);
+            if(randomNumber === 1) { randomNumber = "CRITICAL MISS"; }
+            else if( randomNumber === howManySides) { randomNumber = "CRITICAL HIT"; }
+            numberString += randomNumber + ", ";
+        }
+        numberString = numberString.substring(0, numberString.length - 2);
+        bot.say(ps1Channel, numberString);
+      return;
     }
 
   });
