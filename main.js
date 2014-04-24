@@ -113,7 +113,7 @@ function addListeners() {
       return;
     }
 
-    var diceCommandRe = /!(\d*)d(\d+)/;
+    var diceCommandRe = /^!(\d*)d(\d+)/;
     var result = text.match(diceCommandRe);
     if (result !== null) {
         var howManyDice = parseInt(result[1] === "" ? "1" : result[1], 10);
