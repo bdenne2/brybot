@@ -15,6 +15,7 @@ if(!productionEnvironment)
 {
   config.configFileName = "config";
   config.haveIrcConsoleLog = true;
+  ps1Channel = "#botwar";
 }
 
 //setup
