@@ -82,10 +82,15 @@ function addListeners() {
     }
     var text = message.args[1];
 
-    if(isAdmin(nick) && to === config.botName) //I'm sending directly to bot.
-    {
-      bot.say(ps1Channel, text);
-      return;
+    // Prevent people from messaging the bot with commands that output to the
+    // channel.
+    if(to === config.botName) {
+      if(isAdmin(nick)) //I'm sending directly to bot.
+      {
+        bot.say(ps1Channel, text);
+        return;
+      }
+      return; //don't accept pms
     }
 
     if(text.indexOf("!brybot") === 0)
@@ -103,17 +108,17 @@ function addListeners() {
         bot.say(ps1Channel, addAssfaceModifier("You didn't ask a god damn question", nick, null, "."));
         return;
       }
-      
+
       bot.say(ps1Channel, addAssfaceModifier(getRandom8ballResult(), nick, null, "."));
       return;
     }
 
     var diceCommandRe = /!(\d*)d(\d+)/;
     var result = text.match(diceCommandRe);
-    if (result !== null) {  
+    if (result !== null) {
         var howManyDice = parseInt(result[1] === "" ? "1" : result[1], 10);
         var howManySides = parseInt(result[2], 10);
-       
+
         if(howManyDice > 10 || howManySides > 9e+254) //haha
         {
           bot.say(ps1Channel, "ಠ_ಠ");
@@ -143,7 +148,7 @@ function connect() {
     }
 
     bot.connect(function() {
-      console.log("bot connected?"); 
+      console.log("bot connected?");
       bot.say("nickServ", "identify " + data);
     });
 
@@ -174,7 +179,7 @@ function addAssfaceModifier(innocentMessage, nick, assModifier, normalModifier)
   {
     return innocentMessage = innocentMessage + assModifier;
   }
-  
+
   return innocentMessage + normalModifier;
 }
 
