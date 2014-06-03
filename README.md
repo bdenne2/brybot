@@ -8,7 +8,7 @@ Commands:
 * !magic8ball / !8ball
 * !brybot
 * !xdy
-** Where x is the number of dice and y is the number of sides.
+  * Where x is the number of dice and y is the number of sides.
 
 Systemd and you:
 * Create your brybot.service file.
