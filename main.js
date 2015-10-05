@@ -2,7 +2,7 @@
 
 //config
 var productionEnvironment = false;
-var ps1Channel = "#pumpingstationone";
+var ps1Channel = "##pumpingstationone";
 var config = {
   channels: [ps1Channel],
   server: "chat.freenode.net",
@@ -167,7 +167,7 @@ function doIgnore(nick)
 
 function isAssface(nick)
 {
-  return (nick === "NegativeK") || (nick === "loans") || (nick === "Bioguy") || (nick === "Nackle");
+  return (nick.indexOf("hef") > -1) || (nick === "NegativeK") || (nick === "loans") || (nick === "Bioguy") || (nick === "Nackle") || (nick === "Toba") || (nick === "`justin");
 }
 
 function addAssfaceModifier(innocentMessage, nick, assModifier, normalModifier)
