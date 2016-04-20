@@ -113,6 +113,11 @@ function addListeners() {
       return;
     }
 
+    if(text.indexOf("!kick") === 0)
+    {
+      part(ps1Channel);
+    }
+
     var diceCommandRe = /^!(\d*)d(\d+)/;
     var result = text.match(diceCommandRe);
     if (result !== null) {
@@ -155,6 +160,10 @@ function connect() {
     });
 
   });
+}
+
+function part(channel) {
+  bot.part(channel);
 }
 
 function doIgnore(nick)
