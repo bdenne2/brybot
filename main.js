@@ -60,7 +60,9 @@ connect();
 function addListeners() {
 
   bot.addListener('error', function(message) {
-//        console.log('error: ', message);
+        console.log('error: ', message);
+	part(ps1Channel);
+	connect();
   });
 
   bot.addListener("notice", function(from, to, text, message) {
